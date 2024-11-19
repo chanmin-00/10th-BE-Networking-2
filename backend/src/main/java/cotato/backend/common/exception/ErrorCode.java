@@ -15,6 +15,11 @@ public enum ErrorCode {
 
 	//500
 	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부에서 에러가 발생하였습니다.", "COMMON-002"),
+
+	// 게시글 저장 관련 에러
+	SAVE_EXCEL_FILE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "엑셀 파일 저장에 실패하였습니다.", "POST-001"),
+	POST_NOT_FOUND(HttpStatus.NOT_FOUND, "게시글을 찾을 수 없습니다.", "POST-002"),
+
 	;
 
 	private final HttpStatus httpStatus;
