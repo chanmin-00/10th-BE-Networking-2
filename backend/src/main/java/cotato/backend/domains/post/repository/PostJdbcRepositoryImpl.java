@@ -11,15 +11,17 @@ import lombok.RequiredArgsConstructor;
 
 @Repository
 @RequiredArgsConstructor
-public class PostCustomRepositoryImpl implements PostCustomRepository {
+public class PostJdbcRepositoryImpl implements PostJdbcRepository {
 
 	private final JdbcTemplate jdbcTemplate;
 
+	private static final int BATCH_SIZE = 1000;
+
 	// 게시글 목록 저장, BULK INSERT 방식으로 처리
 	@Transactional
-	public void saveAllByJdbcTemplate(List<Post> postList) {
+	public void saveAllPostsByJdbcTemplate(List<Post> postList) {
 		String sql = "INSERT INTO post (title, content, name, views) VALUES (?, ?, ?, ?)";
-		jdbcTemplate.batchUpdate(sql, postList, 1000, (ps, post) -> {
+		jdbcTemplate.batchUpdate(sql, postList, BATCH_SIZE, (ps, post) -> {
 			ps.setString(1, post.getTitle());
 			ps.setString(2, post.getContent());
 			ps.setString(3, post.getName());

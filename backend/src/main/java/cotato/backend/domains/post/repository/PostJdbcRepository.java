@@ -4,8 +4,8 @@ import java.util.List;
 
 import cotato.backend.domains.post.entity.Post;
 
-public interface PostCustomRepository {
+public interface PostJdbcRepository {
 
-	void saveAllByJdbcTemplate(List<Post> postList);
+	void saveAllPostsByJdbcTemplate(List<Post> postList);
 
 }

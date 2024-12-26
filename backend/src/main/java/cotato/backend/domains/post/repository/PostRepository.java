@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import cotato.backend.domains.post.entity.Post;
 
 @Repository
-public interface PostRepository extends JpaRepository<Post, Long>, PostCustomRepository {
+public interface PostRepository extends JpaRepository<Post, Long>, PostJdbcRepository {
 
 	@Query("SELECT p FROM Post p ORDER BY p.views DESC")
 	Page<Post> findAllByOrderByViewsDesc(Pageable pageable);
