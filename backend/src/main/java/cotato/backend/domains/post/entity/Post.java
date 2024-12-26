@@ -1,5 +1,6 @@
 package cotato.backend.domains.post.entity;
 
+import cotato.backend.domains.post.dto.PostDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Post {
 
 	@Id
@@ -44,19 +45,12 @@ public class Post {
 		this.views++;
 	}
 
-	// 제목 설정
-	public void setTitle(String title) {
-		this.title = title;
+	// PostDTO -> Post 엔터티로 변환
+	public static Post toPostEntity(final PostDTO postDTO) {
+		return Post.builder()
+			.title(postDTO.getTitle())
+			.content(postDTO.getContent())
+			.name(postDTO.getName())
+			.build();
 	}
-
-	// 내용 설정
-	public void setContent(String content) {
-		this.content = content;
-	}
-
-	// 작성자 설정
-	public void setName(String name) {
-		this.name = name;
-	}
-
 }
