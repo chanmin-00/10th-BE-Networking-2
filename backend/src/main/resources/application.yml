@@ -4,6 +4,7 @@ spring:
     url: 'jdbc:mysql://localhost:3306/testdb?rewriteBatchedStatements=true'
     username: 'root'
     password: '0000'
+
   jpa:
     database: mysql
     database-platform: org.hibernate.dialect.MySQLDialect
@@ -13,6 +14,9 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  data:
+    redis:
+      host: localhost
 
 logging.level:
   org.hibernate.SQL: TRACE
