@@ -59,7 +59,7 @@ public class PostService {
 	public PostDTO getPostById(final long id) {
 
 		// 게시글이 존재하지 않을 경우 예외 처리
-		Post post = postRepository.findById(id).orElseThrow(() -> PostException.from(POST_NOT_FOUND));
+		Post post = postRepository.findByIdForUpdate(id).orElseThrow(() -> PostException.from(POST_NOT_FOUND));
 
 		// 조회수 증가
 		post.increaseViews();
