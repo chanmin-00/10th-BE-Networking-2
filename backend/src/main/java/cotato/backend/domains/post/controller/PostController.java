@@ -66,7 +66,7 @@ public class PostController {
 	public ResponseEntity<DataResponse<GetPostPreviewListResponse>> getPosts(
 		final @RequestParam(required = false, defaultValue = "0") @PositiveOrZero int page) {
 
-		PostListDTO postListDTO = postService.getPostPreviewList(page);
+		PostListDTO postListDTO = postService.getPostPreviewListWithCache(page);
 
 		return ResponseEntity.ok(
 			DataResponse.from(GetPostPreviewListResponse.toGetPostPreviewListResponse(postListDTO)));

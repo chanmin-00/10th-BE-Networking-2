@@ -5,6 +5,8 @@ import static java.util.stream.Collectors.*;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +31,7 @@ public class PostService {
 	private static final int PAGE_SIZE = 10;
 
 	// 로컬 파일 경로로부터 엑셀 파일을 읽어 Post 엔터티로 변환하고 저장
+	@CacheEvict(value = "postList", allEntries = true, cacheManager = "cacheManager")
 	@Transactional
 	public void saveEstatesByExcel(final String filePath) {
 
@@ -49,6 +52,7 @@ public class PostService {
 	}
 
 	// 단일 게시글 저장
+	@CacheEvict(value = "postList", allEntries = true, cacheManager = "cacheManager")
 	@Transactional
 	public void savePost(final PostDTO postDTO) {
 		postRepository.save(Post.toPostEntity(postDTO));
@@ -75,10 +79,20 @@ public class PostService {
 		Pageable pageable = getPageable(page);
 
 		return PostListDTO.toPostListDTO(postRepository.findAllByOrderByViewsDesc(pageable));
+	}
 
+	// 게시글 목록 조회, 조회수 내림차순 정렬, Redis 캐시 적용
+	@Cacheable(value = "postList", key = "#page", cacheManager = "cacheManager")
+	@Transactional(readOnly = true)
+	public PostListDTO getPostPreviewListWithCache(final int page) {
+
+		Pageable pageable = getPageable(page);
+
+		return PostListDTO.toPostListDTO(postRepository.findAllByOrderByViewsDesc(pageable));
 	}
 
 	// 단일 게시글 삭제
+	@CacheEvict(value = "postList", allEntries = true, cacheManager = "cacheManager")
 	@Transactional
 	public void deletePost(final long id) {
 		if (!postRepository.existsById(id)) {
